@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% set noindex = true %}
+
+{% block title %}ההזמנות{% endblock %}
+
+{% block content %}
+
+  <section class="max-w-6xl mx-auto px-4 py-12">
+    <div class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl md:text-4xl">
+        ההזמנות
+      </h1>
+      <form method="post" action="{{ url_for('admin.logout') }}">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        <button type="submit" class="btn">
+          יציאה
+        </button>
+      </form>
+    </div>
+
+    {% if preview_count %}
+    <div class="sticker bg-pink-200 p-6 mb-6 flex flex-wrap items-center justify-between gap-4">
+      <p class="text-lg">
+        הזמנות בדיקה:
+        {{ preview_count }}
+      </p>
+      <form method="post" action="{{ url_for('admin.delete_previews') }}" onsubmit="return confirm('למחוק את כל הזמנות הבדיקה לצמיתות?');">
+        <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+        <button type="submit" class="btn">
+          מחיקת כל הזמנות הבדיקה
+        </button>
+      </form>
+    </div>
+    {% endif %}
+
+    {% if not rows %}
+    <p class="sticker bg-white p-6">
+      עדיין אין הזמנות.
+    </p>
+    {% else %}
+    <div class="sticker bg-white overflow-x-auto">
+      <table class="w-full text-start">
+        <thead class="bg-yellow-200">
+          <tr>
+            <th class="p-3 text-start">
+              מספר
+            </th>
+            <th class="p-3 text-start">
+              תאריך
+            </th>
+            <th class="p-3 text-start">
+              שם
+            </th>
+            <th class="p-3 text-start">
+              טלפון
+            </th>
+            <th class="p-3 text-start">
+              עיר
+            </th>
+            <th class="p-3 text-start">
+              גודל
+            </th>
+            <th class="p-3 text-start">
+              סכום
+            </th>
+            <th class="p-3 text-start">
+              סטטוס
+            </th>
+            <th class="p-3 text-start">
+              פרטים
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for r in rows %}
+          <tr class="border-t-2 border-gray-200">
+            <td class="p-3">
+              {{ r.id }}
+            </td>
+            <td class="p-3">
+              {{ r.created_at.replace("T", " ") }}
+            </td>
+            <td class="p-3">
+              {{ r.full_name }}
+            </td>
+            <td class="p-3" dir="ltr">
+              {{ r.phone }}
+            </td>
+            <td class="p-3">
+              {{ r.city }}
+            </td>
+            <td class="p-3">
+              {{ sizes[r.size] }}
+            </td>
+            <td class="p-3">
+              {% if r.total_price is none %}
+              טרם נקבע
+              {% else %}
+              ₪{{ r.total_price }}
+              {% endif %}
+            </td>
+            <td class="p-3">
+              {{ statuses[r.status] }}
+            </td>
+            <td class="p-3">
+              <a href="{{ url_for('admin.order_detail', order_id=r.id) }}" class="underline decoration-4 decoration-pink-500">
+                צפייה
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </section>
+
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% set noindex = true %}
+
+{% block title %}הדף לא נמצא{% endblock %}
+
+{% block content %}
+
+  <section class="max-w-2xl mx-auto px-4 py-16 text-center">
+    <div class="sticker bg-pink-200 p-8">
+      <h1 class="text-4xl md:text-5xl mb-4">
+        הדף לא נמצא
+      </h1>
+      <p class="text-lg mb-6">
+        ייתכן שהקישור שגוי או שהדף הוסר.
+      </p>
+      <a href="/" class="btn">
+        חזרה לדף הבית
+      </a>
+    </div>
+  </section>
+
+{% endblock %}

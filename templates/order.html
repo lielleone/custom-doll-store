@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block title %}הזמנת בובה בעיצוב אישי{% endblock %}
+{% block description %}ממלאים פרטים, מעלים את הציור ואנחנו מתחילים ליצור.{% endblock %}
+
+{% block scripts %}
+  <script src="{{ static_url('vendor/gsap/gsap.min.js') }}" defer></script>
+  <script src="{{ static_url('vendor/gsap/DrawSVGPlugin.min.js') }}" defer></script>
+  <script src="{{ static_url('js/order.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+
+  <section class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="text-4xl md:text-5xl text-center mb-4">
+      הזמנת בובה
+    </h1>
+    <p class="text-center text-lg mb-10">
+      ממלאים את הפרטים, מעלים את הציור, ואנחנו מתחילים ליצור.
+    </p>
+
+    {% if errors %}
+    <div role="alert" class="sticker bg-red-100 p-6 mb-8">
+      <h2 class="display text-2xl mb-2">
+        יש כמה דברים לתקן
+      </h2>
+      <ul class="list-disc ps-6">
+        {% for e in errors %}
+        <li>
+          {{ e }}
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <ol class="wizard-steps" aria-label="שלבי ההזמנה" hidden>
+      <li><button type="button" class="wizard-step-btn" data-goto="1"><span class="wizard-num">1</span> הציור</button></li>
+      <li><button type="button" class="wizard-step-btn" data-goto="2"><span class="wizard-num">2</span> אפשרויות</button></li>
+      <li><button type="button" class="wizard-step-btn" data-goto="3"><span class="wizard-num">3</span> פרטים ושליחה</button></li>
+    </ol>
+
+    <form method="post" action="/order" enctype="multipart/form-data" class="order-form grid gap-6" data-wizard data-price="{{ price }}" data-embroidery-price="{{ embroidery_price }}"{% if errors %} data-had-errors{% endif %}>
+      <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+
+      <div aria-hidden="true" style="position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap;">
+        <label for="website">
+          נא להשאיר שדה זה ריק
+        </label>
+        <input type="text" id="website" name="website" value="" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="wizard-panel" data-panel="1">
+      <fieldset class="sticker bg-pink-200 p-6" tabindex="-1">
+        <legend class="display text-2xl px-2">
+          הציור
+        </legend>
+        <div class="workshop" data-workshop>
+          <label for="drawing" class="block mb-2">
+            העלאת הציור או התמונה
+          </label>
+          <div class="workshop-drop">
+            <input
+              type="file"
+              id="drawing"
+              name="drawing"
+              accept=".jpg,.jpeg,.png,.pdf,image/jpeg,image/png,application/pdf"
+              required
+              aria-describedby="drawing-hint drawing-status"
+              class="field workshop-input"
+            >
+            <div class="workshop-empty" aria-hidden="true">
+              <svg class="workshop-icon" viewBox="0 0 64 64" width="64" height="64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 50h36a4 4 0 0 0 4-4V18L42 6H14a4 4 0 0 0-4 4v36a4 4 0 0 0 4 4z"/><path d="M42 6v12h12"/><path d="M20 40c4-8 8-12 12-6s8 2 12-6" stroke-dasharray="4 4"/></svg>
+              <p class="display text-xl">גוררים לכאן את הציור, או לוחצים לבחירה</p>
+            </div>
+            <div class="workshop-preview" hidden>
+              <div class="workshop-paper">
+                <img class="workshop-img" alt="" hidden>
+                <div class="workshop-pdf" hidden>
+                  <svg viewBox="0 0 64 64" width="72" height="72" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 58h36a4 4 0 0 0 4-4V18L42 6H14a4 4 0 0 0-4 4v44a4 4 0 0 0 4 4z"/><path d="M42 6v12h12"/></svg>
+                  <span dir="ltr">PDF</span>
+                </div>
+                <span class="workshop-grid" aria-hidden="true"></span>
+                <span class="workshop-laser" aria-hidden="true"></span>
+                <svg class="workshop-stitch" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="3" y="3" width="94" height="94" rx="5" fill="none" stroke="#db2777" stroke-width="1.6" stroke-dasharray="4 3" vector-effect="non-scaling-stroke"/></svg>
+              </div>
+              <p class="workshop-ready display" aria-hidden="true">✓ הציור מוכן לסדנה</p>
+            </div>
+          </div>
+          <p id="drawing-status" class="workshop-status" aria-live="polite"></p>
+        </div>
+        <p id="drawing-hint" class="mt-2 text-sm">
+          קבצים מותרים:
+          <span dir="ltr">
+            JPG
+          </span>
+          ,
+          <span dir="ltr">
+            PNG
+          </span>
+          או
+          <span dir="ltr">
+            PDF
+          </span>
+          . גודל קובץ מקסימלי: 10 מגה-בייט. מומלץ לצלם בתאורה טובה ולוודא שכל פרטי הציור ברורים.
+        </p>
+      </fieldset>
+      <div class="wizard-nav">
+        <button type="button" class="btn" data-next>המשך</button>
+      </div>
+      </div>
+
+      <div class="wizard-panel" data-panel="2">
+      <fieldset class="sticker bg-lime-200 p-6" tabindex="-1">
+        <legend class="display text-2xl px-2">
+          אפשרויות
+        </legend>
+
+        <div class="option-cards grid sm:grid-cols-2 gap-4 mb-4">
+          <label class="option-card">
+            <input type="radio" name="embroidery" value="" {% if form.embroidery != "yes" %}checked{% endif %} class="option-input">
+            <span class="option-check" aria-hidden="true">✓</span>
+            <span class="option-title display text-xl">בלי רקמה</span>
+            <span class="option-sub">כלול במחיר</span>
+          </label>
+          <label class="option-card">
+            <input type="radio" name="embroidery" value="yes" {% if form.embroidery == "yes" %}checked{% endif %} class="option-input">
+            <span class="option-check" aria-hidden="true">✓</span>
+            <span class="option-title">
+              רקמה אישית על רגל הבובה, בתוספת
+              <span class="display">
+                ₪{{ embroidery_price }}
+              </span>
+            </span>
+            <span class="option-patch" aria-hidden="true"></span>
+          </label>
+        </div>
+
+        <div class="embroidery-box" data-embroidery-box>
+          <label for="embroidery_text" class="block mb-2">
+            הטקסט לרקמה (שם הילד או תאריך)
+          </label>
+          <input type="text" id="embroidery_text" name="embroidery_text" value="{{ form.embroidery_text }}" maxlength="40" class="field">
+          <div class="embroidery-preview" aria-hidden="true">
+            <span class="embroidery-felt"><span class="embroidery-thread" data-embroidery-preview></span></span>
+            <span class="embroidery-note">המחשה בלבד</span>
+          </div>
+        </div>
+      </fieldset>
+      <p class="wizard-total display text-xl" aria-live="polite">סה״כ: ₪<span data-total>{{ price }}</span></p>
+      <div class="wizard-nav">
+        <button type="button" class="btn-ghost" data-back>חזרה</button>
+        <button type="button" class="btn" data-next>המשך</button>
+      </div>
+      </div>
+
+      <div class="wizard-panel" data-panel="3">
+      <fieldset class="sticker bg-sky-200 p-6" tabindex="-1">
+        <legend class="display text-2xl px-2">
+          פרטי המזמין
+        </legend>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="md:col-span-2">
+            <label for="full_name" class="block mb-2">
+              שם מלא
+            </label>
+            <input type="text" id="full_name" name="full_name" value="{{ form.full_name }}" autocomplete="name" required class="field">
+          </div>
+          <div>
+            <label for="phone" class="block mb-2">
+              טלפון נייד
+            </label>
+            <input type="tel" id="phone" name="phone" value="{{ form.phone }}" autocomplete="tel" dir="ltr" required class="field text-right">
+          </div>
+          <div>
+            <label for="email" class="block mb-2">
+              דואר אלקטרוני
+            </label>
+            <input type="email" id="email" name="email" value="{{ form.email }}" autocomplete="email" dir="ltr" required class="field text-right">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="sticker bg-orange-200 p-6">
+        <legend class="display text-2xl px-2">
+          כתובת למשלוח
+        </legend>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label for="street" class="block mb-2">
+              רחוב
+            </label>
+            <input type="text" id="street" name="street" value="{{ form.street }}" autocomplete="address-line1" required class="field">
+          </div>
+          <div>
+            <label for="house_number" class="block mb-2">
+              מספר בית
+            </label>
+            <input type="text" id="house_number" name="house_number" value="{{ form.house_number }}" required class="field">
+          </div>
+          <div>
+            <label for="city" class="block mb-2">
+              עיר
+            </label>
+            <input type="text" id="city" name="city" value="{{ form.city }}" autocomplete="address-level2" required class="field">
+          </div>
+          <div>
+            <label for="zip" class="block mb-2">
+              מיקוד
+            </label>
+            <input type="text" id="zip" name="zip" value="{{ form.zip }}" autocomplete="postal-code" inputmode="numeric" dir="ltr" required class="field text-right">
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="sticker bg-yellow-200 p-6">
+        <legend class="display text-2xl px-2">
+          הערות
+        </legend>
+        <label for="notes" class="block mb-2">
+          הערות מיוחדות לשליח או לצוות הייצור
+        </label>
+        <textarea id="notes" name="notes" rows="4" class="field">{{ form.notes }}</textarea>
+      </fieldset>
+
+      <div class="sticker bg-white p-6">
+        <label for="accept_terms" class="flex items-center gap-3">
+          <input type="checkbox" id="accept_terms" name="accept_terms" value="yes" required {% if form.accept_terms == "yes" %}checked{% endif %} class="w-5 h-5 shrink-0">
+          <span>
+            קראתי ואני מאשר/ת את
+            <a href="/terms" target="_blank" rel="noopener" class="underline decoration-4 decoration-pink-500">התקנון<span class="sr-only"> (נפתח בלשונית חדשה)</span></a>
+            ואת
+            <a href="/privacy" target="_blank" rel="noopener" class="underline decoration-4 decoration-sky-500">מדיניות הפרטיות<span class="sr-only"> (נפתח בלשונית חדשה)</span></a>
+          </span>
+        </label>
+      </div>
+
+      <div class="text-center">
+        <p class="mb-2">
+          מחיר בסיס:
+          <span class="display text-2xl">
+            ₪{{ price }}
+          </span>
+          , משלוח עד הבית כלול.
+        </p>
+        <p class="wizard-total display text-xl mb-4">סה״כ: ₪<span data-total>{{ price }}</span></p>
+        <div class="wizard-nav wizard-nav-final">
+          <button type="button" class="btn-ghost" data-back>חזרה</button>
+          <button type="submit" class="btn magic-submit">
+            <span class="magic-label">שליחת ההזמנה לסדנה</span>
+            <svg class="magic-stitch" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="2" y="2" width="96" height="96" rx="48" fill="none" stroke="#111827" stroke-width="2" stroke-dasharray="5 4" vector-effect="non-scaling-stroke"/></svg>
+            <span class="magic-stamp" aria-hidden="true">✓</span>
+          </button>
+        </div>
+      </div>
+      </div>
+
+    </form>
+  </section>
+
+{% endblock %}

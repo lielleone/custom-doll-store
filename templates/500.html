@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% set noindex = true %}
+
+{% block title %}משהו השתבש{% endblock %}
+
+{% block content %}
+
+  <section class="max-w-2xl mx-auto px-4 py-16 text-center">
+    <div class="sticker bg-orange-200 p-8">
+      <h1 class="text-4xl md:text-5xl mb-4">
+        משהו השתבש
+      </h1>
+      <p class="text-lg mb-6">
+        קרתה תקלה זמנית באתר. נא לנסות שוב בעוד כמה דקות.
+      </p>
+      <a href="/" class="btn">
+        חזרה לדף הבית
+      </a>
+    </div>
+  </section>
+
+{% endblock %}

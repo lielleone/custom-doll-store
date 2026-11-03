@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+
+{% block title %}בובה בעיצוב אישי לפי ציור של הילד{% endblock %}
+{% block description %}הופכים את הציור של הילד לבובה אמיתית, תפורה ביד. מחיר 380 שקלים כולל משלוח עד הבית.{% endblock %}
+
+{% block scripts %}
+  <script src="{{ static_url('vendor/gsap/gsap.min.js') }}" defer></script>
+  <script src="{{ static_url('vendor/gsap/ScrollTrigger.min.js') }}" defer></script>
+  <script src="{{ static_url('vendor/gsap/DrawSVGPlugin.min.js') }}" defer></script>
+  <script src="{{ static_url('vendor/gsap/MorphSVGPlugin.min.js') }}" defer></script>
+  <script src="{{ static_url('js/story.js') }}" defer></script>
+  <script src="{{ static_url('js/gallery.js') }}" defer></script>
+{% endblock %}
+
+{% block content %}
+
+  <!-- הסיפור: מציור לבובה. בלי JavaScript (או עם הפחתת תנועה) זה נראה כמו ה-hero הרגיל -->
+  <section id="story" class="story scroll-mt-20">
+    <div class="story-pin">
+      <div class="story-inner max-w-5xl mx-auto px-4 py-12 grid md:grid-cols-2 gap-10 items-center">
+
+        <div class="story-stage sticker bg-white p-2 overflow-hidden">
+          <img src="{{ url_for('static', filename='images/main_image.jpeg') }}"
+               alt=""
+               class="story-photo w-full h-80 object-cover rounded-2xl">
+          <div class="story-art">
+            <span class="story-desk" aria-hidden="true"></span>
+            {% include "partials/story_cat.svg" %}
+            <div class="story-final sticker bg-white p-2">
+              <svg viewBox="556 150 526 686" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+                <image href="{{ url_for('static', filename='images/main_image.jpeg') }}" width="1083" height="836"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <div class="story-text">
+          <div class="story-step" data-step="0">
+            <h1 class="text-4xl font-bold mb-4">
+              הופכים את הציורים של הילדים לבובות אמיתיות, מהדמיון לחבר אמיתי.
+            </h1>
+            <p class="text-lg mb-6">
+              הפתיעו את הילדים או את היקרים לכם עם מתנה מרגשת שאין כמותה בעולם – בובה תלת ממדית איכותית שנוצרה בדיוק לפי ציור או איור אמיתי של הילד.
+            </p>
+            <a href="/order" class="inline-block bg-rose-600 hover:bg-rose-700 text-white text-lg font-semibold px-8 py-3 rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-rose-300">
+              להזמנה
+            </a>
+          </div>
+          <div class="story-step" data-step="1">
+            <h2 class="text-3xl font-bold mb-3">
+              1. שולחים את הציור
+            </h2>
+            <p class="text-lg">
+              מעלים באתר את הציור או האיור האהוב על הילד. אפשר גם לצרף תמונה ברורה מהטלפון.
+            </p>
+          </div>
+          <div class="story-step" data-step="2">
+            <h2 class="text-3xl font-bold mb-3">
+              2. האמנים שלנו יוצרים
+            </h2>
+            <p class="text-lg">
+              המעצבים והתופרות שלנו הופכים את הקווים הדו ממדיים לבובה תלת ממדית מוקפדת, עם תשומת לב לכל פרט קטן.
+            </p>
+          </div>
+          <div class="story-step" data-step="3">
+            <h2 class="text-3xl font-bold mb-3">
+              3. הבובה אצלכם בבית
+            </h2>
+            <p class="text-lg mb-6">
+              הבובה נארזת באהבה ונשלחת ישירות אליכם לכתובת, או לנקודת איסוף לבחירתכם.
+            </p>
+            <a href="/order" class="inline-block bg-rose-600 hover:bg-rose-700 text-white text-lg font-semibold px-8 py-3 rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-rose-300">
+              להזמנה
+            </a>
+          </div>
+          <div class="story-progress" aria-hidden="true">
+            <span></span><span></span><span></span><span></span>
+          </div>
+        </div>
+
+      </div>
+      <div class="story-hint" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="product" class="max-w-5xl mx-auto px-4 pb-12 scroll-mt-20">
+    <h2 class="text-2xl font-bold mb-6 text-center">
+      על הבובה
+    </h2>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-xl shadow p-6">
+        <h3 class="font-bold mb-2">
+          חומרים
+        </h3>
+        <p>
+          הבובות עשויות מבדי קטיפה ופליז רכים ונעימים למגע, עם מילוי סיבי סיליקון איכותי ששומר על נפח ורכות לאורך זמן.
+        </p>
+      </div>
+      <div class="bg-white rounded-xl shadow p-6">
+        <h3 class="font-bold mb-2">
+          גודל
+        </h3>
+        <p>
+          גובה ממוצע של כ-30 עד 35 ס"מ, בהתאם לפרופורציות של הציור המקורי.
+        </p>
+      </div>
+      <div class="bg-white rounded-xl shadow p-6">
+        <h3 class="font-bold mb-2">
+          זמן הכנה
+        </h3>
+        <p>
+          כל בובה נתפרת ידנית בעבודת אומן מדויקת, ותהליך הייצור לוקח בין 10 ל-14 ימי עסקים.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="gallery" class="max-w-5xl mx-auto px-4 pb-12 scroll-mt-20">
+    <h2 class="text-2xl font-bold mb-6 text-center">
+      גלריה
+    </h2>
+    <div class="gallery-grid grid grid-cols-1 md:grid-cols-2 gap-8 max-w-sm md:max-w-3xl mx-auto">
+      <figure class="gallery-card sticker bg-pink-200 p-3 md:-rotate-2">
+        <a href="{{ url_for('static', filename='images/girl-and-doll.jpeg') }}" class="gallery-item block relative rounded-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900 focus-visible:ring-offset-2" data-gallery-item>
+          <img
+            src="{{ url_for('static', filename='images/girl-and-doll.jpeg') }}"
+            alt="איור של בובת חתול מלבד עם כתמים חומים"
+            width="1179"
+            height="1527"
+            loading="lazy"
+            decoding="async"
+            class="gallery-img w-full h-auto aspect-[4/5] object-cover object-top rounded-2xl border-4 border-gray-900 bg-white"
+          >
+          <span class="gallery-sheen" aria-hidden="true"></span>
+          <span class="gallery-zoom" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6"/></svg>
+          </span>
+          <span class="sr-only">הגדלת התמונה</span>
+        </a>
+      </figure>
+      <figure class="gallery-card sticker bg-sky-200 p-3 md:rotate-2">
+        <a href="{{ url_for('static', filename='images/boy-and-doll.jpeg') }}" class="gallery-item block relative rounded-2xl focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900 focus-visible:ring-offset-2" data-gallery-item>
+          <img
+            src="{{ url_for('static', filename='images/boy-and-doll.jpeg') }}"
+            alt="איור של בובת חתול מלבד עם כתמים חומים"
+            width="1179"
+            height="1557"
+            loading="lazy"
+            decoding="async"
+            class="gallery-img w-full h-auto aspect-[4/5] object-cover object-top rounded-2xl border-4 border-gray-900 bg-white"
+          >
+          <span class="gallery-sheen" aria-hidden="true"></span>
+          <span class="gallery-zoom" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21M10.5 7.5v6M7.5 10.5h6"/></svg>
+          </span>
+          <span class="sr-only">הגדלת התמונה</span>
+        </a>
+      </figure>
+    </div>
+    <dialog class="gallery-dialog" aria-label="תמונה מוגדלת">
+      <div class="gallery-dialog-box sticker bg-white p-3">
+        <button type="button" class="gallery-close" data-gallery-close>
+          סגירה
+        </button>
+        <img class="gallery-dialog-img rounded-2xl" src="" alt="">
+      </div>
+    </dialog>
+  </section>
+
+  <section id="order" class="max-w-3xl mx-auto px-4 pb-16 scroll-mt-20">
+    <div class="bg-white rounded-2xl shadow p-8 text-center">
+      <h2 class="text-2xl font-bold mb-4">
+        להזמנה
+      </h2>
+      <p class="text-3xl font-bold text-rose-600 mb-2">
+        ₪{{ price }}
+      </p>
+      <p class="mb-2">
+        המשלוח עד הבית כלול במחיר. אין הפתעות בקופה.
+      </p>
+      <p class="mb-6 font-medium">
+        זמן אספקה כולל: 14-21 ימי עסקים מרגע אישור ההזמנה ועד שהחבילה מגיעה אליכם, כולל ייצור ומשלוח.
+      </p>
+      <ul class="text-start mb-6 space-y-2">
+        <li>
+          רקמה אישית (שם הילד או תאריך) על רגל הבובה, בתוספת
+          <span class="font-bold">
+            ₪{{ embroidery_price }}
+          </span>
+        </li>
+      </ul>
+      <a href="/order" class="inline-block bg-rose-600 hover:bg-rose-700 text-white text-lg font-semibold px-8 py-3 rounded-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-rose-300">
+        להזמנה
+      </a>
+    </div>
+  </section>
+
+{% endblock %}

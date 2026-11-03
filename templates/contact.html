@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}צור קשר{% endblock %}
+{% block description %}טלפון, וואטסאפ ודואר אלקטרוני, ושעות המענה שלנו.{% endblock %}
+
+{% block content %}
+
+  <section class="max-w-3xl mx-auto px-4 py-12">
+    <h1 class="text-4xl font-bold mb-8">
+      צור קשר
+    </h1>
+
+    <div class="grid gap-4">
+
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="font-bold mb-2">
+          טלפון
+        </h2>
+        <a href="tel:{{ site.phone }}" class="text-rose-600 underline">
+          {{ site.phone }}
+        </a>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="font-bold mb-2">
+          וואטסאפ
+        </h2>
+        <p class="mb-2">
+          מענה מהיר גם בוואטסאפ.
+        </p>
+        <a href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener" class="text-rose-600 underline">
+          {{ site.phone }}
+        </a>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="font-bold mb-2">
+          דואר אלקטרוני
+        </h2>
+        <a href="mailto:{{ site.email }}" class="text-rose-600 underline">
+          {{ site.email }}
+        </a>
+      </div>
+
+      <div class="bg-white rounded-xl shadow p-6">
+        <h2 class="font-bold mb-2">
+          שעות מענה
+        </h2>
+        <p>
+          ימים א'-ה': 09:00 - 18:00
+        </p>
+        <p>
+          יום ו' וערבי חג: 09:00 - 13:00
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+{% endblock %}

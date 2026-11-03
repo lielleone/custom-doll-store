@@ -1,0 +1,11 @@
+.env
+orders.db
+uploads/
+venv/
+venv_old/
+__pycache__/
+.DS_Store
+tools/
+.ipynb_checkpoints/
+*.ipynb
+doll_store_deploy*.zip

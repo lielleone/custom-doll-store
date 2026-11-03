@@ -1,0 +1,659 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+    @layer components {
+      .sticker {
+        @apply border-4 border-gray-900 rounded-3xl shadow-[5px_5px_0_0_#111827];
+      }
+      .btn {
+        @apply inline-block bg-yellow-300 text-gray-900 text-xl px-8 py-3 rounded-full border-4 border-gray-900 shadow-[4px_4px_0_0_#111827] transition hover:-translate-y-1 focus:outline-none focus-visible:ring-4 focus-visible:ring-gray-900 focus-visible:ring-offset-2;
+      }
+      .field {
+        @apply w-full bg-white border-4 border-gray-900 rounded-xl px-4 py-2 text-lg focus:outline-none focus:ring-4 focus:ring-sky-400;
+      }
+      .nav-link {
+        @apply block px-5 py-2 rounded-full text-lg border-4 border-transparent hover:bg-white hover:border-gray-900 focus:outline-none focus-visible:bg-white focus-visible:border-gray-900;
+      }
+    }
+
+/* Story hero (templates/index.html, static/js/story.js).
+   Without .is-animated (no JS, reduced motion) it is the normal hero
+   with the three steps listed under the intro. */
+.story-art,
+.story-progress,
+.story-hint {
+  display: none;
+}
+.story:not(.is-animated) .story-step[data-step="1"],
+.story:not(.is-animated) .story-step[data-step="2"],
+.story:not(.is-animated) .story-step[data-step="3"] {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 3px dashed #111827;
+}
+.story:not(.is-animated) .story-step h2 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  margin-bottom: 0.25rem;
+}
+.story:not(.is-animated) .story-step p {
+  margin-bottom: 0;
+}
+.story:not(.is-animated) .story-step[data-step="3"] a {
+  display: none;
+}
+/* JS on and motion allowed: hide the list until story.js takes over,
+   so it does not flash before the animation starts. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .story:not(.is-animated) .story-step[data-step="1"],
+  html.js .story:not(.is-animated) .story-step[data-step="2"],
+  html.js .story:not(.is-animated) .story-step[data-step="3"] {
+    display: none;
+  }
+}
+
+.story.is-animated {
+  height: 420vh;
+}
+.story.is-animated .story-pin {
+  position: sticky;
+  top: var(--header-h, 76px);
+  height: calc(100vh - var(--header-h, 76px));
+  height: calc(100svh - var(--header-h, 76px));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.story.is-animated .story-inner {
+  width: 100%;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+.story.is-animated .story-photo {
+  display: none;
+}
+.story.is-animated .story-stage {
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+.story.is-animated .story-art {
+  display: block;
+  position: relative;
+  width: min(100%, 30rem, calc((100svh - var(--header-h, 76px) - 5rem) * 0.8));
+  aspect-ratio: 4 / 5;
+  margin-inline: auto;
+  perspective: 1000px;
+}
+.story-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.story-final {
+  position: absolute;
+  inset: 3% 5%;
+  opacity: 0;
+  visibility: hidden;
+}
+.story-final svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
+}
+.story.is-animated .story-text {
+  position: relative;
+  min-height: 25rem;
+}
+.story.is-animated .story-step {
+  display: block;
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.story.is-animated .story-progress {
+  display: flex;
+  gap: 0.5rem;
+  position: absolute;
+  bottom: 0;
+  inset-inline-start: 0;
+}
+.story-progress span {
+  width: 0.85rem;
+  height: 0.85rem;
+  border: 3px solid #111827;
+  border-radius: 9999px;
+  background: #fff;
+  transition: background-color 0.2s;
+}
+.story-progress span.is-active {
+  background: #f472b6;
+}
+.story.is-animated .story-hint {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 0.75rem;
+  color: #111827;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .story-hint svg {
+    animation: story-hint 1.6s ease-in-out infinite;
+  }
+}
+@keyframes story-hint {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+@media (max-width: 767px) {
+  .story.is-animated {
+    height: 320vh;
+  }
+  .story.is-animated .story-inner {
+    gap: 0.5rem;
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+  .story.is-animated .story-art {
+    /* leave about 19rem of text plus the header inside the pinned area */
+    width: min(17rem, calc((100svh - var(--header-h, 76px) - 20.5rem) * 0.8));
+  }
+  .story.is-animated .story-text {
+    min-height: 19rem;
+    text-align: center;
+  }
+  .story.is-animated .story-hint {
+    display: none;
+  }
+  .story.is-animated .story-step h1 {
+    font-size: 1.6rem;
+    line-height: 2.1rem;
+  }
+  .story.is-animated .story-step h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  .story.is-animated .story-progress {
+    display: none;
+  }
+}
+
+/* Gallery (templates/index.html, static/js/gallery.js).
+   Without JS each photo is a plain link to the full image. */
+.gallery-item {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.gallery-img {
+  display: block;
+}
+.gallery-sheen {
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at var(--sheen-x, 50%) var(--sheen-y, 30%),
+    rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0) 55%);
+  transition: opacity 0.25s;
+}
+.gallery-zoom {
+  position: absolute;
+  bottom: 0.75rem;
+  inset-inline-end: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 3px solid #111827;
+  border-radius: 9999px;
+  background: #fde047;
+  color: #111827;
+  box-shadow: 3px 3px 0 0 #111827;
+  transform: scale(0.6);
+  opacity: 0;
+  transition: transform 0.25s, opacity 0.25s;
+}
+.gallery-item:hover .gallery-sheen,
+.gallery-item:focus-visible .gallery-sheen {
+  opacity: 1;
+}
+.gallery-item:hover .gallery-zoom,
+.gallery-item:focus-visible .gallery-zoom {
+  transform: scale(1);
+  opacity: 1;
+}
+@media (hover: none) {
+  .gallery-zoom {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.gallery-dialog {
+  max-width: min(92vw, 40rem);
+  max-height: 92vh;
+  padding: 0;
+  overflow: visible;
+  border: 0;
+  background: transparent;
+}
+.gallery-dialog::backdrop {
+  background: rgba(17, 24, 39, 0.65);
+}
+.gallery-dialog-box {
+  position: relative;
+}
+.gallery-dialog-img {
+  display: block;
+  max-width: 100%;
+  max-height: calc(92vh - 1.5rem);
+  margin-inline: auto;
+}
+.gallery-close {
+  position: absolute;
+  top: -1rem;
+  inset-inline-end: -1rem;
+  z-index: 1;
+  padding: 0.35rem 1rem;
+  border: 4px solid #111827;
+  border-radius: 9999px;
+  background: #fde047;
+  color: #111827;
+  font-family: "Secular One", "Varela Round", sans-serif;
+  font-size: 1.1rem;
+  box-shadow: 3px 3px 0 0 #111827;
+}
+.gallery-close:focus-visible {
+  outline: 4px solid #111827;
+  outline-offset: 2px;
+}
+
+/* Order form (templates/order.html, static/js/order.js).
+   Without JS: the full form as before. With JS: a 3-step wizard. */
+.btn-ghost {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  border: 4px solid #111827;
+  border-radius: 9999px;
+  background: #fff;
+  color: #111827;
+  font-family: "Secular One", "Varela Round", sans-serif;
+  font-size: 1.125rem;
+}
+.btn-ghost:hover {
+  background: #f3f4f6;
+}
+.btn-ghost:focus-visible {
+  outline: 4px solid #111827;
+  outline-offset: 2px;
+}
+.wizard-nav,
+.wizard-total,
+.workshop-empty,
+.embroidery-preview {
+  display: none;
+}
+/* the row with the send button is always shown; only "back" needs the wizard */
+.wizard-nav.wizard-nav-final {
+  display: flex;
+  justify-content: center;
+}
+.order-form:not(.is-wizard) [data-back] {
+  display: none;
+}
+.order-form.is-wizard .wizard-nav {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+.order-form.is-wizard .wizard-panel[data-panel="1"] .wizard-nav {
+  justify-content: flex-end;
+}
+.order-form.is-wizard .wizard-nav-final {
+  justify-content: center;
+}
+.order-form.is-wizard .wizard-total {
+  display: block;
+  margin-top: 1rem;
+  text-align: center;
+}
+.order-form.is-wizard .wizard-panel {
+  display: grid;
+  gap: 1.5rem;
+}
+.order-form.is-wizard .wizard-panel[hidden] {
+  display: none;
+}
+.order-form.is-wizard fieldset:focus {
+  outline: none;
+}
+
+/* stepper */
+.wizard-steps {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  counter-reset: none;
+}
+.wizard-steps[hidden] {
+  display: none;
+}
+.wizard-step-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 1rem 0.4rem 0.75rem;
+  border: 3px solid #111827;
+  border-radius: 9999px;
+  background: #fff;
+  color: #111827;
+  font-family: "Secular One", "Varela Round", sans-serif;
+}
+.wizard-step-btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.wizard-step-btn[aria-current="step"] {
+  background: #fde047;
+  box-shadow: 3px 3px 0 0 #111827;
+}
+.wizard-step-btn.is-done .wizard-num {
+  background: #a3e635;
+}
+.wizard-step-btn:focus-visible {
+  outline: 4px solid #111827;
+  outline-offset: 2px;
+}
+.wizard-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 3px solid #111827;
+  border-radius: 9999px;
+  background: #fff;
+}
+@media (max-width: 639px) {
+  .wizard-step-btn {
+    padding: 0.3rem;
+    font-size: 0;
+  }
+  .wizard-step-btn .wizard-num {
+    font-size: 1rem;
+  }
+  .wizard-step-btn[aria-current="step"] {
+    font-size: 0.95rem;
+    padding: 0.3rem 0.75rem 0.3rem 0.3rem;
+  }
+}
+
+/* drawing workshop */
+html.js .workshop-drop {
+  position: relative;
+  min-height: 15rem;
+  border: 4px dashed #111827;
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(#fff9 1px, transparent 1px) 0 0 / 100% 22px,
+    #fffdf7;
+  transition: background-color 0.2s, transform 0.2s;
+}
+html.js .workshop-drop:focus-within {
+  outline: 4px solid #111827;
+  outline-offset: 3px;
+}
+html.js .workshop-drop.is-dragover {
+  background-color: #fce7f3;
+  transform: scale(1.01);
+}
+html.js .workshop-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 2;
+}
+html.js .workshop-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 15rem;
+  padding: 1.5rem;
+  text-align: center;
+  color: #111827;
+}
+html.js .workshop.has-file .workshop-empty {
+  display: none;
+}
+.workshop-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+}
+.workshop-preview[hidden] {
+  display: none;
+}
+.workshop-paper {
+  position: relative;
+  max-width: 16rem;
+  padding: 0.5rem;
+  overflow: hidden;
+  border: 3px solid #111827;
+  border-radius: 0.75rem;
+  background: #fff;
+  box-shadow: 4px 4px 0 0 #111827;
+  transform: rotate(-1.5deg);
+}
+.workshop-img {
+  display: block;
+  max-width: 100%;
+  max-height: 14rem;
+  border-radius: 0.5rem;
+}
+.workshop-pdf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 1.5rem 3rem;
+  font-family: "Secular One", "Varela Round", sans-serif;
+}
+.workshop-pdf[hidden] {
+  display: none;
+}
+.workshop-grid,
+.workshop-laser,
+.workshop-stitch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+.workshop-grid {
+  background:
+    linear-gradient(rgba(236, 72, 153, 0.18) 1px, transparent 1px) 0 0 / 14px 14px,
+    linear-gradient(90deg, rgba(236, 72, 153, 0.18) 1px, transparent 1px) 0 0 / 14px 14px;
+}
+.workshop-laser {
+  inset: auto 0 auto 0;
+  top: 0;
+  height: 3px;
+  background: #ec4899;
+  box-shadow: 0 0 12px 4px rgba(236, 72, 153, 0.55);
+}
+.workshop-stitch {
+  width: 100%;
+  height: 100%;
+}
+.workshop-ready {
+  opacity: 0;
+  color: #15803d;
+  font-size: 1.15rem;
+}
+.workshop.is-ready .workshop-ready {
+  opacity: 1;
+}
+.workshop.is-ready .workshop-stitch {
+  opacity: 1;
+}
+.workshop-status {
+  margin-top: 0.5rem;
+  font-weight: 700;
+}
+.workshop-status.is-error {
+  color: #b91c1c;
+}
+
+/* option cards */
+.option-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-height: 7rem;
+  padding: 1rem 1.25rem;
+  border: 4px solid #111827;
+  border-radius: 1.25rem;
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+.option-card:hover {
+  transform: translateY(-2px);
+}
+.option-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.option-card:focus-within {
+  outline: 4px solid #111827;
+  outline-offset: 3px;
+}
+.option-card:has(.option-input:checked) {
+  background: #fef9c3;
+  box-shadow: 5px 5px 0 0 #111827;
+}
+.option-check {
+  position: absolute;
+  top: -0.75rem;
+  inset-inline-end: -0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #111827;
+  border-radius: 9999px;
+  background: #a3e635;
+  font-weight: 700;
+  transform: scale(0);
+  transition: transform 0.2s;
+}
+.option-card:has(.option-input:checked) .option-check {
+  transform: scale(1);
+}
+.option-sub {
+  color: #374151;
+}
+.option-patch {
+  width: 3.5rem;
+  height: 1.25rem;
+  margin-top: auto;
+  border: 2px dashed #7c4a1e;
+  border-radius: 0.5rem;
+  background: #f2dfaa;
+}
+.order-form.is-wizard .embroidery-box[hidden] {
+  display: none;
+}
+.order-form.is-wizard .embroidery-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+.embroidery-felt {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 9rem;
+  min-height: 3.25rem;
+  padding: 0.5rem 1.25rem;
+  border: 3px dashed #7c4a1e;
+  border-radius: 1.5rem;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.5), transparent 60%),
+    #f2dfaa;
+  box-shadow: inset 0 -4px 0 rgba(120, 53, 15, 0.15);
+}
+.embroidery-thread {
+  color: #9d174d;
+  font-family: "Secular One", "Varela Round", sans-serif;
+  font-size: 1.35rem;
+  letter-spacing: 0.04em;
+  text-shadow: 0 1px 0 #fff, 0 0 1px #831843;
+}
+.embroidery-note {
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+/* magic submit */
+.magic-submit {
+  position: relative;
+}
+.magic-stitch {
+  position: absolute;
+  inset: -9px;
+  width: calc(100% + 18px);
+  height: calc(100% + 18px);
+  pointer-events: none;
+  opacity: 0;
+}
+.magic-stamp {
+  position: absolute;
+  top: -1.1rem;
+  inset-inline-start: -1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 3px solid #111827;
+  border-radius: 9999px;
+  background: #f472b6;
+  color: #111827;
+  font-weight: 700;
+  opacity: 0;
+  transform: scale(0);
+}
+
+/* Desk shadow under the notebook at the start of the story (story.js fades it) */
+.story-desk {
+  position: absolute;
+  inset-inline: 6%;
+  bottom: -2%;
+  height: 16%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(17, 24, 39, 0.32), rgba(17, 24, 39, 0) 70%);
+  opacity: 0;
+  pointer-events: none;
+}

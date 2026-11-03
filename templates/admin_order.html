@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+{% set noindex = true %}
+
+{% block title %}הזמנה מספר {{ o.id }}{% endblock %}
+
+{% block content %}
+
+  <section class="max-w-4xl mx-auto px-4 py-12">
+    <a href="{{ url_for('admin.index') }}" class="underline decoration-4 decoration-pink-500">
+      חזרה לרשימה
+    </a>
+
+    <h1 class="text-3xl md:text-4xl my-6">
+      הזמנה מספר
+      {{ o.id }}
+    </h1>
+
+    <div class="grid md:grid-cols-2 gap-6">
+
+      <div class="sticker bg-sky-200 p-6">
+        <h2 class="text-2xl mb-3">
+          פרטי המזמין
+        </h2>
+        <p>
+          {{ o.full_name }}
+        </p>
+        <p dir="ltr" class="text-start">
+          <a href="tel:{{ o.phone }}" class="underline">
+            {{ o.phone }}
+          </a>
+        </p>
+        <p dir="ltr" class="text-start">
+          <a href="mailto:{{ o.email }}" class="underline">
+            {{ o.email }}
+          </a>
+        </p>
+      </div>
+
+      <div class="sticker bg-orange-200 p-6">
+        <h2 class="text-2xl mb-3">
+          כתובת למשלוח
+        </h2>
+        <p>
+          {{ o.street }}
+          {{ o.house_number }}
+        </p>
+        <p>
+          {{ o.city }}
+        </p>
+        <p>
+          {{ o.zip }}
+        </p>
+      </div>
+
+      <div class="sticker bg-lime-200 p-6">
+        <h2 class="text-2xl mb-3">
+          פרטי ההזמנה
+        </h2>
+        <p>
+          גודל:
+          {{ sizes[o.size] }}
+        </p>
+        <p>
+          {% if o.embroidery %}
+          רקמה:
+          {{ o.embroidery_text }}
+          {% else %}
+          ללא רקמה
+          {% endif %}
+        </p>
+        <p>
+          {% if o.total_price is none %}
+          סכום: טרם נקבע
+          {% else %}
+          סכום: ₪{{ o.total_price }}
+          {% endif %}
+        </p>
+        <p>
+          תאריך:
+          {{ o.created_at.replace("T", " ") }}
+        </p>
+      </div>
+
+      <div class="sticker bg-yellow-200 p-6">
+        <h2 class="text-2xl mb-3">
+          סטטוס
+        </h2>
+        <form method="post" action="{{ url_for('admin.set_status', order_id=o.id) }}" class="grid gap-3">
+          <input type="hidden" name="csrf" value="{{ csrf_token() }}">
+          <label for="status" class="block">
+            עדכון סטטוס
+          </label>
+          <select id="status" name="status" class="field">
+            {% for key, label in statuses.items() %}
+            {% if key != "preview" or o.status == "preview" %}
+            <option value="{{ key }}" {% if key == o.status %}selected{% endif %}>
+              {{ label }}
+            </option>
+            {% endif %}
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn">
+            שמירה
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+    <div class="sticker bg-white p-6 mt-6">
+      <h2 class="text-2xl mb-3">
+        הערות
+      </h2>
+      <p class="whitespace-pre-wrap">
+        {{ o.notes }}
+      </p>
+    </div>
+
+    <div class="sticker bg-pink-200 p-6 mt-6">
+      <h2 class="text-2xl mb-3">
+        הציור
+      </h2>
+      {% if is_pdf %}
+      <a href="{{ url_for('admin.drawing', order_id=o.id) }}" class="btn">
+        הורדת הקובץ
+      </a>
+      {% else %}
+      <img src="{{ url_for('admin.drawing', order_id=o.id) }}" alt="" class="max-w-full rounded-xl border-4 border-gray-900 bg-white">
+      <p class="mt-4">
+        <a href="{{ url_for('admin.drawing', order_id=o.id) }}" download class="underline decoration-4 decoration-sky-500">
+          הורדת הקובץ
+        </a>
+      </p>
+      {% endif %}
+    </div>
+
+  </section>
+
+{% endblock %}
